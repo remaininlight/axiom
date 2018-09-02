@@ -27,5 +27,4 @@ set_target_properties(axiom_vst2 PROPERTIES
         MACOSX_BUNDLE_NAME "Axiom VST2")
 
 target_link_libraries(axiom_vst2 ${AXIOM_LINK_FLAGS} axiom_editor)
-
 install(TARGETS axiom_vst2 DESTINATION .)

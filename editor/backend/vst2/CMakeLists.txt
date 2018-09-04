@@ -30,3 +30,17 @@ set_target_properties(axiom_vst2 PROPERTIES
 
 target_link_libraries(axiom_vst2 ${AXIOM_LINK_FLAGS} axiom_editor)
 install(TARGETS axiom_vst2 DESTINATION .)
+
+install(CODE "
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH})
+    set(Qt5Core_DIR ${Qt5Core_DIR})
+    set(QT_LIBRARY_DIR ${QT_LIBRARY_DIR})
+    set(QT_BINARY_DIR ${QT_BINARY_DIR})
+    set(QT_QTCORE_LIBRARY_RELEASE ${QT_QTCORE_LIBRARY_RELEASE})
+    set(QT_QTCORE_LIBRARY_DEBUG ${QT_QTCORE_LIBRARY_DEBUG})
+
+    include(DeployQt5)
+
+    fixup_qt5_executable(\"\${CMAKE_INSTALL_PREFIX}/AxiomVST.vst\" qcocoa \"\" \"\" \"\" \"\")
+")
+

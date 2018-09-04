@@ -32,6 +32,7 @@ before_script:
 # build it!
 script:
   - make
+  - make package
 
 # create installers with cpack
 before_deploy:

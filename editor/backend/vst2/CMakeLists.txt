@@ -12,8 +12,9 @@ add_library(axiom_vst2 MODULE
         AxiomVstPlugin.h AxiomVstPlugin.cpp
         AxiomVstEditor.h AxiomVstEditor.cpp
         VstAudioBackend.h VstAudioBackend.cpp
-        AxiomVst.def ${ICON_PATH})
+        AxiomVst.def PkgInfo ${ICON_PATH})
 set_source_files_properties(${ICON_PATH} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+set_source_files_properties(PkgInfo PROPERTIES MACOSX_PACKAGE_LOCATION .)
 
 set_target_properties(axiom_vst2 PROPERTIES
         PREFIX ""
@@ -24,7 +25,8 @@ set_target_properties(axiom_vst2 PROPERTIES
         XCODE_ATTRIBUTE_WRAPPER_EXTENSION "vst"
         MACOSX_BUNDLE_INFO_PLIST "${RES_DIR}/Info.plist.in"
         MACOSX_BUNDLE_INFO_STRING "Axiom VST2 0.3.2"
-        MACOSX_BUNDLE_NAME "Axiom VST2")
+        MACOSX_BUNDLE_NAME "Axiom VST2"
+        MACOSX_BUNDLE_PACKAGE_TYPE "BNDL")
 
 target_link_libraries(axiom_vst2 ${AXIOM_LINK_FLAGS} axiom_editor)
 install(TARGETS axiom_vst2 DESTINATION .)

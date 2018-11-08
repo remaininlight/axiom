@@ -29,6 +29,13 @@ pub struct CastExpression {
 }
 
 #[derive(Debug)]
+pub struct ConditionalExpression {
+    pub condition: SubExpression,
+    pub consequence: SubExpression,
+    pub alternative: SubExpression,
+}
+
+#[derive(Debug)]
 pub struct ControlExpression {
     pub name: String,
     pub field: ControlField,
@@ -84,6 +91,7 @@ pub enum ExpressionData {
     Assign(AssignExpression),
     Call(CallExpression),
     Cast(CastExpression),
+    Conditional(ConditionalExpression),
     Control(ControlExpression),
     Math(MathExpression),
     Note(NoteExpression),
@@ -218,6 +226,22 @@ impl Expression {
 
     pub fn new_variable(pos: SourceRange, name: String) -> Expression {
         Expression::new(pos, ExpressionData::Variable(VariableExpression { name }))
+    }
+
+    pub fn new_conditional(
+        pos: SourceRange,
+        condition: SubExpression,
+        consequence: SubExpression,
+        alternative: SubExpression,
+    ) -> Expression {
+        Expression::new(
+            pos,
+            ExpressionData::Conditional(ConditionalExpression {
+                condition,
+                consequence,
+                alternative,
+            }),
+        )
     }
 
     pub fn from(expr: AssignableExpression) -> Expression {

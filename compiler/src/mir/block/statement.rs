@@ -43,6 +43,13 @@ pub enum Statement {
         args: Vec<usize>,
         varargs: Vec<usize>,
     },
+    // TODO Should there even be a Conditional statement?
+    Conditional {
+        // TODO What types should these have?
+        condition: usize,
+        consequence: usize,
+        alternative: usize,
+    },
     StoreControl {
         control: usize,
         field: ControlField,
@@ -74,6 +81,7 @@ impl Statement {
             | Statement::Extract { .. }
             | Statement::Combine { .. }
             | Statement::LoadControl { .. }
+            | Statement::Conditional { .. }
             | Statement::CallFunc { .. } => false,
             Statement::StoreControl { .. } => true,
         }

@@ -1,6 +1,7 @@
 mod block_context;
 mod gen_call_func;
 mod gen_combine;
+mod gen_conditional;
 mod gen_constant;
 mod gen_extract;
 mod gen_global;
@@ -24,6 +25,7 @@ use mir::{Block, BlockRef};
 
 use self::gen_call_func::gen_call_func_statement;
 use self::gen_combine::gen_combine_statement;
+use self::gen_conditional::gen_conditional_statement;
 use self::gen_constant::gen_constant_statement;
 use self::gen_extract::gen_extract_statement;
 use self::gen_global::gen_global_statement;
@@ -53,6 +55,11 @@ fn gen_statement(index: usize, statement: &Statement, node: &mut BlockContext) -
             args,
             varargs,
         } => gen_call_func_statement(index, function, args, varargs, node),
+        Statement::Conditional {
+            condition,
+            consequence,
+            alternative,
+        } => gen_conditional_statement(index, condition, consequence, alternative, node),
         Statement::StoreControl {
             control,
             field,

@@ -56,6 +56,11 @@ pub enum TokenType {
     Note,
     Identifier,
 
+    // conditional control flow
+    If,
+    Then,
+    Else,
+
     Unknown,
 }
 

@@ -160,6 +160,10 @@ impl Parser {
                 ..
             }) => Parser::parse_open_bracket_token_expr(stream),
             Some(Token {
+                token_type: TokenType::If,
+                ..
+            }) => Parser::parse_conditional_expr(stream),
+            Some(Token {
                 token_type: TokenType::Plus,
                 ..
             })
@@ -660,6 +664,44 @@ impl Parser {
             lvalue,
             Box::new(rhs),
             operator,
+        ))
+    }
+
+    fn parse_conditional_expr(stream: &mut TokenStream) -> ExprResult {
+        let if_token = Parser::expect_token(TokenType::If, stream.next())?;
+
+        let token_type = match stream.peek() {
+            Some(token) => token.token_type,
+            None => return Err(CompileError::UnexpectedEnd),
+        };
+
+        let cond = Parser::parse_expression(stream, Parser::get_operator_precedence(token_type))?;
+
+        Parser::expect_token(TokenType::Then, stream.next())?;
+
+        let consequence_token_type = match stream.peek() {
+            Some(token) => token.token_type,
+            None => return Err(CompileError::UnexpectedEnd),
+        };
+        let consequence = Parser::parse_expression(stream, Parser::get_operator_precedence(consequence_token_type))?;
+
+        Parser::expect_token(TokenType::Else, stream.next())?;
+
+        let alternative_token_type = match stream.peek() {
+            Some(token) => token.token_type,
+            None => return Err(CompileError::UnexpectedEnd),
+        };
+        let alternative = Parser::parse_expression(stream, Parser::get_operator_precedence(alternative_token_type))?;
+
+        let end_pos = Parser::expect_token(TokenType::CloseBracket, stream.next())?
+            .pos
+            .1;
+
+        Ok(Expression::new_conditional(
+            SourceRange(if_token.pos.0, end_pos),
+            Box::new(cond),
+            Box::new(consequence),
+            Box::new(alternative)
         ))
     }
 

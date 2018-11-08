@@ -6,7 +6,7 @@ use std::iter::Peekable;
 type TokenMatcher = (Regex, TokenType);
 
 lazy_static! {
-    static ref PAIR_MATCHES: [TokenMatcher; 48] = [
+    static ref PAIR_MATCHES: [TokenMatcher; 51] = [
         // multi-char tokens
         get_matcher(r"\.\.\.", TokenType::Ellipsis),
         get_matcher(r"==", TokenType::EqualTo),
@@ -59,6 +59,12 @@ lazy_static! {
         get_matcher(r"<", TokenType::Lt),
         get_matcher(r"&", TokenType::BitwiseAnd),
         get_matcher(r"\|", TokenType::BitwiseOr),
+
+        // conditional control flow
+        // TODO Make conditional matchers match conditionals
+        get_matcher(r"if", TokenType::If),
+        get_matcher(r"then", TokenType::Then),
+        get_matcher(r"else", TokenType::Else),
 
         get_matcher("\n", TokenType::EndOfLine)
     ];

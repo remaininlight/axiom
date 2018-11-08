@@ -50,6 +50,9 @@ impl<'a> AstLower<'a> {
             ast::ExpressionData::Variable(ref variable) => {
                 self.lower_variable_expr(&expr.pos, variable)
             }
+            ast::ExpressionData::Conditional(ref conditional) => {
+                self.lower_conditional_expr(&expr.pos, conditional)
+            }
         }
     }
 
@@ -428,6 +431,27 @@ impl<'a> AstLower<'a> {
                 _ => Err(CompileError::unknown_variable(expr.name.clone(), *pos)),
             },
         }
+    }
+
+    fn lower_conditional_expr(
+        &mut self,
+        pos: &ast::SourceRange,
+        expr: &'a ast::ConditionalExpression,
+    ) -> LowerResult {
+
+        let condition = self.lower_expression(expr.condition.as_ref())?;
+
+        let consequence = self.lower_expression(expr.consequence.as_ref())?;
+
+        let alternative = self.lower_expression(expr.alternative.as_ref())?;
+
+        Ok(
+            self.add_statement(mir::block::Statement::Conditional {
+                condition,
+                consequence,
+                alternative,
+            })
+        )
     }
 
     fn get_control_index(&mut self, expr: &'a ast::ControlExpression) -> usize {

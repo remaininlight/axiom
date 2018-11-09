@@ -4,9 +4,9 @@ use inkwell::{FloatPredicate};
 
 pub fn gen_conditional_statement(
     index: usize,
-    condition: &usize,
-    consequence: &usize,
-    alternative: &usize,
+    condition: usize,
+    consequence: usize,
+    alternative: usize,
     node: &mut BlockContext,
 ) -> PointerValue {
 
@@ -17,7 +17,8 @@ pub fn gen_conditional_statement(
     // From https://github.com/TheDan64/inkwell/blob/master/examples/kaleidoscope/main.rs#L999
     // TODO Why is float created here?
     // TODO Find a way to invoke a compile_expr function
-    let condition = self.compile_expr(condition)?;
+    //let condition = self.compile_expr(condition)?;
+    let condition = node.get_statement(condition);
     let condition = builder.build_float_compare(FloatPredicate::ONE, condition, zero_const, "ifcond");
 
     let then_bb = node
@@ -38,14 +39,14 @@ pub fn gen_conditional_statement(
 
     // build then block
     builder.position_at_end(&then_bb);
-    let then_val = self.compile_expr(consequence)?;
+    let then_val = node.get_statement(consequence);
     builder.build_unconditional_branch(&cont_bb);
 
     let then_bb = builder.get_insert_block().unwrap();
 
     // build else block
     builder.position_at_end(&else_bb);
-    let else_val = self.compile_expr(alternative)?;
+    let else_val = node.get_statement(alternative);
     builder.build_unconditional_branch(&cont_bb);
 
     let else_bb = builder.get_insert_block().unwrap();
@@ -60,6 +61,5 @@ pub fn gen_conditional_statement(
         (&else_val, &else_bb)
     ]);
 
-    // TODO This should return inkwell::values::PointerValue but instead returns std::result::Result
-    Ok(phi.as_basic_value().into_float_value())
+    phi.as_basic_value().into_pointer_value()
 }

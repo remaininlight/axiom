@@ -30,9 +30,9 @@ pub struct CastExpression {
 
 #[derive(Debug)]
 pub struct ConditionalExpression {
-    pub condition: SubExpression,
-    pub consequence: SubExpression,
-    pub alternative: SubExpression,
+    pub condition: Block,
+    pub consequence: Block,
+    pub alternative: Block,
 }
 
 #[derive(Debug)]

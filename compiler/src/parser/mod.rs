@@ -670,12 +670,7 @@ impl Parser {
     fn parse_conditional_expr(stream: &mut TokenStream) -> ExprResult {
         let if_token = Parser::expect_token(TokenType::If, stream.next())?;
 
-        let token_type = match stream.peek() {
-            Some(token) => token.token_type,
-            None => return Err(CompileError::UnexpectedEnd),
-        };
-
-        let cond = Parser::parse_expression(stream, Parser::get_operator_precedence(token_type))?;
+        let cond = Parser::parse_expression(stream, PRECEDENCE_ALL)?;
 
         Parser::expect_token(TokenType::Then, stream.next())?;
 
@@ -692,10 +687,6 @@ impl Parser {
             None => return Err(CompileError::UnexpectedEnd),
         };
         let alternative = Parser::parse_expression(stream, Parser::get_operator_precedence(alternative_token_type))?;
-
-        let end_pos = Parser::expect_token(TokenType::CloseBracket, stream.next())?
-            .pos
-            .1;
 
         Ok(Expression::new_conditional(
             SourceRange(if_token.pos.0, end_pos),

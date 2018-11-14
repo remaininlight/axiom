@@ -3,6 +3,7 @@ mod channel_function;
 mod defer_function;
 mod delay_function;
 mod function_context;
+mod if_function;
 mod indexed_function;
 mod note_function;
 mod num_function;
@@ -33,6 +34,7 @@ pub use self::biquad_filter_function::*;
 pub use self::channel_function::*;
 pub use self::defer_function::*;
 pub use self::delay_function::*;
+pub use self::if_function::*;
 pub use self::indexed_function::*;
 pub use self::note_function::*;
 pub use self::num_function::*;
@@ -161,7 +163,8 @@ map_functions! {
     Note => NoteFunction,
     Voices => VoicesFunction,
     Channel => ChannelFunction,
-    Indexed => IndexedFunction
+    Indexed => IndexedFunction,
+    If => IfFunction
 }
 
 fn get_lifecycle_func(

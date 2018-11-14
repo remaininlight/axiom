@@ -51,7 +51,7 @@ macro_rules! define_functions {
             }
         }
 
-        pub const FUNCTION_TABLE: [&str; 51] = [$($str_name, )*];
+        pub const FUNCTION_TABLE: [&str; 52] = [$($str_name, )*];
     );
 }
 
@@ -106,7 +106,8 @@ define_functions! {
     Note = "note" func![(Midi) -> Tuple(vec![Num, Num, Num, Num])],
     Voices = "voices" func![(Midi, VarType::new_array(Num)) -> VarType::new_array(Midi)],
     Channel = "channel" func![(Midi, Num) -> Midi],
-    Indexed = "indexed" func![(Num) -> VarType::new_array(Num)]
+    Indexed = "indexed" func![(Num) -> VarType::new_array(Num)],
+    If = "if" func![(Num, Num, Num) -> Num]
 }
 
 #[derive(Debug, Clone)]

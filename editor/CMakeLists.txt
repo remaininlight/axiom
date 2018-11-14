@@ -4,7 +4,16 @@ if (AXIOM_STATIC_LINK)
     set(Qt5_USE_STATIC_LIBS ON)
     set(Qt5_USE_STATIC_RUNTIME ON)
     add_definitions(-DAXIOM_STATIC_BUILD=1)
-    set(AXIOM_LINK_FLAGS -static -static-libgcc -static-libstdc++)
+
+    find_library(OpenGL_LIBRARY OpenGL)
+    set(STATIC_LIBS ${OpenGL_LIBRARY})
+
+    if (APPLE)
+        set(AXIOM_LINK_FLAGS "")
+    else ()
+        set(AXIOM_LINK_FLAGS -static -static-libgcc -static-libstdc++)
+    endif ()
+
 else ()
     set(AXIOM_LINK_FLAGS "")
 endif ()
@@ -36,6 +45,39 @@ add_library(axiom_editor
         backend/AudioConfiguration.h backend/AudioConfiguration.cpp
         backend/PersistentParameters.h)
 target_link_libraries(axiom_editor axiom_widgets axiom_model axiom_common maxim_compiler Qt5::Widgets)
+if (AXIOM_STATIC_LINK)
+    if (APPLE)
+        FIND_PACKAGE(PNG REQUIRED)
+        list(APPEND STATIC_LIBS PNG::PNG)
+
+        FIND_PACKAGE(harfbuzz REQUIRED)
+        list(APPEND STATIC_LIBS harfbuzz::harfbuzz)
+
+        list(APPEND STATIC_LIBS /usr/local/Cellar/pcre2/10.32/lib/libpcre2-16.a)
+
+        find_library(QTFREETYPE NAMES qtfreetype)
+        set_target_properties(Qt5::Core PROPERTIES INTERFACE_LINK_LIBRARIES "${QTFREETYPE}")
+
+        list(APPEND STATIC_LIBS /usr/local/Qt-5.11.2/lib/libQt5AccessibilitySupport.a
+                                /usr/local/Qt-5.11.2/lib/libQt5ClipboardSupport.a
+                                /usr/local/Qt-5.11.2/lib/libQt5FontDatabaseSupport.a
+                                /usr/local/Qt-5.11.2/lib/libQt5GraphicsSupport.a
+                                /usr/local/Qt-5.11.2/lib/libQt5ThemeSupport.a)
+
+
+        find_package(Qt5Svg REQUIRED)
+        find_package(Qt5PrintSupport REQUIRED)
+        list(APPEND AXIOM_LINK_FLAGS -lcups) # CUPS printer interface
+        find_package(Qt5OpenGL REQUIRED)
+        qt5_use_modules(axiom_editor PrintSupport)
+        list(APPEND STATIC_LIBS Qt5::Core Qt5::QCocoaIntegrationPlugin
+                                Qt5::QCocoaPrinterSupportPlugin Qt5::OpenGL Qt5::Svg)
+        target_link_libraries(axiom_editor "-framework Carbon" "-framework CoreFoundation" "-framework CoreServices" "-framework CoreText" "-framework Cocoa" "-framework QuartzCore" "-framework IOKit" "-framework Security")
+
+        target_link_libraries(axiom_editor ${STATIC_LIBS})
+
+    endif ()
+endif ()
 
 add_subdirectory(backend)
 

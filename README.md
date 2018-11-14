@@ -40,6 +40,10 @@ If you want to build it statically-linked, pass the `AXIOM_STATIC_LINK` flag:
 ```
 cmake ../path/to/source -DAXIOM_STATIC_LINK=ON -DVST2_SDK_ROOT=/path/to/vst/sdk
 ```
+For static linking on macOS [compile Qt statically](http://doc.qt.io/qt-5/osx-deployment.html) and install HarfBuzz, libpng and PCRE2:
+```
+brew install harfbuzz libpng pcre2
+```
 
 CMake will setup files necessary for building. If this fails, make sure you've got Cargo, Qt, LLVM, and the VST SDK installed correctly. Once complete, you can choose which backend to build:
 

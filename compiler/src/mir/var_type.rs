@@ -13,6 +13,7 @@ pub enum VarType {
     Midi,
     Tuple(Vec<VarType>),
     Array(Box<VarType>),
+    Any
 }
 
 impl VarType {
@@ -118,6 +119,7 @@ impl fmt::Display for VarType {
                 write!(f, ")")
             }
             VarType::Array(ref subtype) => write!(f, "array [{:?}]", subtype),
+            VarType::Any => write!(f, "any")
         }
     }
 }

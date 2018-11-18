@@ -107,7 +107,7 @@ define_functions! {
     Voices = "voices" func![(Midi, VarType::new_array(Num)) -> VarType::new_array(Midi)],
     Channel = "channel" func![(Midi, Num) -> Midi],
     Indexed = "indexed" func![(Num) -> VarType::new_array(Num)],
-    If = "if" func![(Num, Num, Num) -> Num]
+    If = "if" func![(Num, Any, Any) -> Any]
 }
 
 #[derive(Debug, Clone)]

@@ -8,7 +8,9 @@ use {CompileError, CompileResult};
 // lowers an AST into a Block MIR object
 pub fn lower_ast(id: mir::BlockId, block: &ast::Block) -> CompileResult<mir::Block> {
     let mut lower = AstLower::new(id);
+    println!("--- Expressions in block before lowering AST:");
     for expr in &block.expressions {
+        println!("{:?}", expr);
         lower.lower_expression(expr)?;
     }
     Ok(lower.block)
@@ -769,7 +771,9 @@ impl<'a> AstLower<'a> {
         expected_type: mir::VarType,
         actual_type: mir::VarType,
     ) -> Option<CompileError> {
-        if expected_type != actual_type {
+        if (expected_type != actual_type)
+            && (expected_type != mir::VarType::Any)
+            && (actual_type != mir::VarType::Any) {
             Some(CompileError::mismatched_type(
                 expected_type,
                 actual_type,

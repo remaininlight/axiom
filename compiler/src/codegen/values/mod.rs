@@ -3,12 +3,14 @@ mod midi_event_value;
 mod midi_value;
 mod num_value;
 mod tuple_value;
+mod any_value;
 
 pub use self::array_value::{ArrayValue, ARRAY_CAPACITY};
 pub use self::midi_event_value::MidiEventValue;
 pub use self::midi_value::MidiValue;
 pub use self::num_value::NumValue;
 pub use self::tuple_value::TupleValue;
+pub use self::any_value::AnyValue;
 
 use inkwell::context::Context;
 use inkwell::types::{BasicType, StructType};
@@ -27,7 +29,8 @@ pub fn remap_type(context: &Context, mir_type: &VarType) -> StructType {
         }
         VarType::Array(inner_type) => {
             ArrayValue::get_type(context, remap_type(context, &inner_type))
-        }
+        },
+        VarType::Any => AnyValue::get_type(context)
     }
 }
 

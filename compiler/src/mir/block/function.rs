@@ -71,6 +71,8 @@ define_functions! {
     Atan = "atan" func![(Num) -> Num],
     Atan2 = "atan2" func![(Num, Num) -> Num],
     Hypot = "hypot" func![(Num, Num) -> Num],
+    Exp = "exp" func![(Num) -> Num],
+    Exp2 = "exp2" func![(Num) -> Num],
     ToRad = "toRad" func![(Num) -> Num],
     ToDeg = "toDeg" func![(Num) -> Num],
     Clamp = "clamp" func![(Num, Num, Num) -> Num],

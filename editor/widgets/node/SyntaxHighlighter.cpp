@@ -23,8 +23,9 @@ public:
         // control formatting
         HighlightRule controlRule;
         controlRule.pattern = QRegExp(R"(:(num|num\[\]|midi|midi\[\]|graph|roll|scope)\b)");
-        controlRule.format.setForeground(QColor(234, 106, 89)); // red
-        controlRule.format.setFontWeight(QFont::Bold);
+        // TODO Uncomment all the *Rule.format.set* . They do not work with static linking on macOS
+        //controlRule.format.setForeground(QColor(234, 106, 89)); // red
+        //controlRule.format.setFontWeight(QFont::Bold);
         highlightRules.push_back(std::move(controlRule));
 
         // function formatting
@@ -36,27 +37,27 @@ public:
         }
         HighlightRule functionRule;
         functionRule.pattern = QRegExp(R"(\b()" % list.join('|') % R"()\b)");
-        functionRule.format.setForeground(QColor(123, 181, 247)); // blue
-        functionRule.format.setFontWeight(QFont::Bold);
+        //functionRule.format.setForeground(QColor(123, 181, 247)); // blue
+        //functionRule.format.setFontWeight(QFont::Bold);
         highlightRules.push_back(std::move(functionRule));
 
         // number formatting
         HighlightRule numberRule;
         numberRule.pattern =
             QRegExp(R"(\b([0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?)\s*[kmgt]?\s*(hz|db|q|s|b)?\b)", Qt::CaseInsensitive);
-        numberRule.format.setForeground(QColor(193, 127, 226)); // purple
-        numberRule.format.setFontWeight(QFont::Bold);
+        //numberRule.format.setForeground(QColor(193, 127, 226)); // purple
+        //numberRule.format.setFontWeight(QFont::Bold);
         highlightRules.push_back(std::move(numberRule));
 
         // form formatting
         HighlightRule formRule;
         formRule.pattern = QRegExp(R"(\b(none|control|osc|note|freq|beats|secs|samples|db|amp|q)\b)");
-        formRule.format.setForeground(QColor(101, 216, 105)); // green
-        formRule.format.setFontWeight(QFont::Bold);
+        //formRule.format.setForeground(QColor(101, 216, 105)); // green
+        //formRule.format.setFontWeight(QFont::Bold);
         highlightRules.push_back(std::move(formRule));
 
-        commentFormat.setForeground(QColor(121, 121, 121)); // grey
-        commentFormat.setFontWeight(QFont::StyleItalic);
+        //commentFormat.setForeground(QColor(121, 121, 121)); // grey
+        //commentFormat.setFontWeight(QFont::StyleItalic);
 
         // comment (single line) formatting
         HighlightRule commentRule;

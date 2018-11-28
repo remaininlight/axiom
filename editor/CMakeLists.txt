@@ -64,7 +64,6 @@ if (AXIOM_STATIC_LINK)
                                 /usr/local/Qt-5.11.2/lib/libQt5GraphicsSupport.a
                                 /usr/local/Qt-5.11.2/lib/libQt5ThemeSupport.a)
 
-
         find_package(Qt5Svg REQUIRED)
         find_package(Qt5PrintSupport REQUIRED)
         list(APPEND AXIOM_LINK_FLAGS -lcups) # CUPS printer interface
